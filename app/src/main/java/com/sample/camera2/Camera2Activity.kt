@@ -9,6 +9,7 @@ import android.hardware.camera2.*
 import android.hardware.camera2.params.StreamConfigurationMap
 import android.os.Bundle
 import android.util.Log
+import android.util.Range
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 import androidx.core.app.ActivityCompat
@@ -51,7 +52,7 @@ class Camera2Activity : Activity() {
             override fun surfaceCreated(p0: SurfaceHolder?) {
                 Log.i(TAG, "surfaceCreated")
                 // Resolution can be set here to influence the camera mode selection
-                //surfaceView.holder.setFixedSize(4224, 3136)
+                surfaceView.holder.setFixedSize(640, 480)
                 connectCameraService()
             }
         }
@@ -135,7 +136,7 @@ class Camera2Activity : Activity() {
                     for(key in result.keys) {
                         val value = result.get(key)
                         if(value != null) {
-                            Log.i(TAG, "${key.name} = $value")
+                            Log.i(TAG, "First Frame: ${key.name} = $value")
                         }
                     }
                     reportedFrameResult = true
@@ -155,7 +156,11 @@ class Camera2Activity : Activity() {
                         // Add surface as target
                         addTarget(surfaceView.holder.surface)
                         // FPS range can be set here to influence camera mode selection
-                        //set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range(30, 30))
+                        set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range(30, 30))
+                        set(CaptureRequest.CONTROL_CAPTURE_INTENT, CameraMetadata.CONTROL_CAPTURE_INTENT_PREVIEW)
+                        set (CaptureRequest.CONTROL_AF_MODE, CameraMetadata.CONTROL_AF_MODE_OFF)
+                        set (CaptureRequest.LENS_FOCUS_DISTANCE, 0f)
+
                     }
                     .build()
                 session.setRepeatingRequest(previewRequest, captureCallback,null)
