@@ -52,7 +52,7 @@ class Camera2Activity : Activity() {
             override fun surfaceCreated(p0: SurfaceHolder?) {
                 Log.i(TAG, "surfaceCreated")
                 // Resolution can be set here to influence the camera mode selection
-                surfaceView.holder.setFixedSize(640, 480)
+                surfaceView.holder.setFixedSize(800, 600)
                 connectCameraService()
             }
         }
